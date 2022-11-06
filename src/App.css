@@ -1,0 +1,24 @@
+*{
+  box-sizing: border-box;
+}
+
+.App {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+button{
+  cursor: pointer;
+}
