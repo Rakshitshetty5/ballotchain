@@ -1,10 +1,19 @@
 import React from 'react'
 import useToggle from "../hooks/useToggle"
 import { useNavigate } from 'react-router-dom'
+import { signOut } from '../redux/auth/reducer'
+import { useDispatch } from 'react-redux'
 
 const Header = () => {
     const [showDropDown, setShowDropDown] = useToggle(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const logout = () => {
+        dispatch(signOut())
+        navigate('/login')
+    }
+
     return (
         <div>
             <nav className="bg-white dark:bg-gray-800  shadow ">
@@ -32,7 +41,7 @@ const Header = () => {
                                                         </span>
                                                     </span>
                                                 </li>
-                                                <li onClick={() => navigate('/login')} className="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600">
+                                                <li onClick={logout} className="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600">
                                                     <span className="flex flex-col">
                                                         <span>
                                                             Logout

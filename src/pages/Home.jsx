@@ -3,11 +3,24 @@ import PageContainer from '../components/PageContainer'
 import { MENU } from '../data/menu'
 import { useNavigate } from 'react-router-dom'
 import DigitalCard from "../components/DigitalCard"
+import { useEffect } from 'react'
+import customAxios from '../utils/CustomAxios'
+import { setVoterDetails } from '../redux/auth/reducer'
+import { useDispatch } from 'react-redux'
 
 const CURRENT_ACTIVE_PHASE = 1
 
 const Home = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    (async () => {
+        const response = await customAxios.get('/voter/details')
+        dispatch(setVoterDetails({ voter_details: response.data.data.user.voter_details}))
+    })()
+  }, [])
+
   return (
     <PageContainer>
         <div className='flex flex-col md:flex-row md:items-center justify-between'>
