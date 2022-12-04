@@ -8,8 +8,6 @@ import VotingPage from './pages/VotingPage';
 import Home from './pages/Home';
 import MyAccountPage from './pages/MyAccountPage';
 import VerifyVoterPage from './pages/VerifyVoterPage';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 const LayoutRoutes = () => {
   return (

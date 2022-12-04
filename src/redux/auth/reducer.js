@@ -4,17 +4,19 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     currentUser : null,
+    isVerified: false,
     voterDetails: null
   },
   reducers: {
     signIn: (state, action) => {
-        state.currentUser = action.payload
+        state.currentUser = action.payload.user
     },
     signOut: (state) => {
         state.currentUser = null;
     },
     setVoterDetails: (state, action) => {
-        state.voterDetails = action.payload.voterDetails        
+        state.voterDetails = action.payload.voter_details   
+        state.isVerified = action.payload.isVerified     
     }
   }
 });

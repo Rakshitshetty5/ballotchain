@@ -62,7 +62,8 @@ const AuthPage = () => {
       setError('Invalid OTP')
     } else {
       const response = await customAxios.post('/voter/verifyOTP', { voter_id: voterId, otp, email: data?.email, voter_details_id: data?.voter_details_id})
-      dispatch(signIn(response.data.data))
+      console.log(response)
+      dispatch(signIn({ user: response.data.data, isVerified: response.data.data.user.isVerified }))
       navigate('/')
     }
   }

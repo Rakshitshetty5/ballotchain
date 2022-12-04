@@ -11,8 +11,8 @@ function App() {
   useEffect(() => {
     if(!currentUser){
       navigate('/login')
-    }else{
-      navigate('/')
+
+      //To Implement : when user logs in and tries to go to the login page not handled!!!
     }
   }, [currentUser, navigate])
 
