@@ -21,9 +21,10 @@ const Header = () => {
     (async () => {
       //call only if access token available
       const response = await customAxios.get("/voter/details");
+      console.log(response)
       dispatch(
         setVoterDetails({
-          voter_details: response.data.data.user.voter_details,
+          voter_details: {...response.data.data.user.voter_details,hasAppliedForVerification: response.data.data.user.hasAppliedForVerification},
           isVerified: response.data.data.user.isVerified,
         })
       );
