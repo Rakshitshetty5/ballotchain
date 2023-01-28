@@ -7,6 +7,7 @@ export const authSlice = createSlice({
     isVerified: false,
     voterDetails: null,
     walletAddress: null,
+    phase: 0
   },
   reducers: {
     signIn: (state, action) => {
@@ -21,10 +22,13 @@ export const authSlice = createSlice({
     },
     setWalletAddress: (state, action) => {
       state.walletAddress = action.payload
+    },
+    setPhase: (state, action) => {
+      state.phase = action.payload
     }
   }
 });
 
-export const { signIn, signOut, setVoterDetails, setWalletAddress } = authSlice.actions;
+export const { signIn, signOut, setVoterDetails, setWalletAddress, setPhase } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -8,17 +8,27 @@ import VotingPage from './pages/VotingPage';
 import Home from './pages/Home';
 import MyAccountPage from './pages/MyAccountPage';
 import VerifyVoterPage from './pages/VerifyVoterPage';
+import { useSelector } from "react-redux";
+
+const protectedRoutes = [
+  { title: 'Verification', id: 1, component: <VerifyVoterPage />, path: '/verify' },
+  { title: 'Voting', id: 2, component: <VotingPage />, path: '/vote'},
+  { title: 'Results', id: 3, component: <ResultsPage />, path: '/results'}
+]
 
 const LayoutRoutes = () => {
+  const CURRENT_ACTIVE_PHASE = useSelector(state => state.auth.phase)
+  
+
+  const allowedRouted = protectedRoutes.find(el => el.id === CURRENT_ACTIVE_PHASE)
+
   return (
     <div className='flex flex-col min-h-[100vh]'>
         <Header />
         <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path="/results" element={<ResultsPage />}/>
-            <Route path="/vote" element={<VotingPage />}/>
+            <Route path={allowedRouted.path} element={allowedRouted.component}/>
             <Route path="/myAccount" element={<MyAccountPage />}/>
-            <Route path="/verify" element={<VerifyVoterPage />}/>
         </Routes>
         <Footer />
     </div>

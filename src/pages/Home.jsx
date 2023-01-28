@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import DigitalCard from "../components/DigitalCard";
 import { useDispatch, useSelector } from "react-redux";
 
-const CURRENT_ACTIVE_PHASE = 1;
+// const CURRENT_ACTIVE_PHASE = 1;
 
 const Home = () => {
   const navigate = useNavigate();
   const isVerfied = useSelector((state) => state.auth?.isVerified);
   const userName = useSelector(state => state.auth?.voterDetails?.first_name)
+  const CURRENT_ACTIVE_PHASE = useSelector(state => state.auth.phase)
 
   const goToPage = (isAccessAllowed, path) => {
     if (!isAccessAllowed) {
