@@ -18,7 +18,7 @@ const protectedRoutes = [
 
 const LayoutRoutes = () => {
   const CURRENT_ACTIVE_PHASE = useSelector(state => state.auth.phase)
-  
+  console.log(CURRENT_ACTIVE_PHASE)
 
   const allowedRouted = protectedRoutes.find(el => el.id === CURRENT_ACTIVE_PHASE)
 
@@ -27,7 +27,7 @@ const LayoutRoutes = () => {
         <Header />
         <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path={allowedRouted.path} element={allowedRouted.component}/>
+            {allowedRouted && <Route path={allowedRouted.path} element={allowedRouted.component}/>}
             <Route path="/myAccount" element={<MyAccountPage />}/>
         </Routes>
         <Footer />

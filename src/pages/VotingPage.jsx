@@ -3,9 +3,20 @@ import { useEffect } from 'react'
 import PageContainer from '../components/PageContainer'
 import VotingCandidateCard from '../components/VoteCandidateCard'
 import customAxios from '../utils/CustomAxios'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const VotingPage = () => {
   const [state, setState] = useState([])
+  const navigate = useNavigate()
+
+    const isVerfied = useSelector(state => state.auth?.isVerified)
+
+    useEffect(() => {
+        if(!isVerfied){
+            navigate('/')
+        }
+    }, [isVerfied])
 
   useEffect(() => {
     (async() => {

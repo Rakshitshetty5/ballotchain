@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DigitalCard from "../components/DigitalCard";
 import { useDispatch, useSelector } from "react-redux";
 
-// const CURRENT_ACTIVE_PHASE = 1;
+const PHASES = ['Registration', 'Verification', 'Voting', 'Results']
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Home = () => {
         <h1 className="text-2xl font-light">Welcome {userName}!</h1>
         <h1 className="text-2xl font-light">
           Current Active Phase:{" "}
-          <span className="text-[green]">Registration</span>
+          <span className="text-[green]">{PHASES[CURRENT_ACTIVE_PHASE]}</span>
         </h1>
       </div>
       {isVerfied && (
