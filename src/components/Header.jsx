@@ -5,7 +5,7 @@ import { signOut } from "../redux/auth/reducer";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import customAxios from "../utils/CustomAxios";
-import { setVoterDetails, setPhase } from "../redux/auth/reducer";
+import { setVoterDetails, setPhase, startFetching, fetchingSuccess } from "../redux/auth/reducer";
 
 const Header = () => {
   const [showDropDown, setShowDropDown] = useToggle(false);
@@ -20,6 +20,7 @@ const Header = () => {
   useEffect(() => {
     (async () => {
       //call only if access token available
+      dispatch(startFetching())
       const response = await customAxios.get("/voter/details");
       dispatch(
         setVoterDetails({
@@ -29,6 +30,7 @@ const Header = () => {
       );
       const response2 = await customAxios.get("/voter/getGeneralSettings")
       dispatch(setPhase(response2.data.data.phase))
+      dispatch(fetchingSuccess())
     })();
   }, []);
 

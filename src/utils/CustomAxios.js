@@ -1,8 +1,8 @@
 import axios from "axios";
 import store from "../redux/store";
-
+import { signOut } from '../redux/auth/reducer'
 const customAxios = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "http://localhost:4000/",
   timeout: process.env.REACT_APP_ENV == "development" ? 2000*60 : 1000*60,
 });
 
@@ -24,6 +24,8 @@ customAxios.interceptors.response.use(
   (err) => {
     if (err.code == "ECONNABORTED") {
       alert(err.message);
+    }else if(err.response.status === 403) {
+      store.dispatch(signOut())
     }
     return Promise.reject(err);
   }

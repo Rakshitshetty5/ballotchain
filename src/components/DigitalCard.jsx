@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 const DigitalCard = () => {
     const currentUser = useSelector(state => state.auth?.voterDetails)
     let walletAddress = useSelector(state => state.auth?.walletAddress)
-    walletAddress = walletAddress.split('').map((el, idx) => {
+    walletAddress = walletAddress?.split('').map((el, idx) => {
         if(idx < 8 || idx > 32){
             return el
         }

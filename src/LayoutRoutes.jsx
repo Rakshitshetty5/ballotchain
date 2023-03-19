@@ -1,14 +1,15 @@
-import React from 'react'
-import { useNavigate } from "react-router-dom";
+import React, { lazy } from 'react'
 import { Route, Routes } from "react-router-dom";
-import ResultsPage from './pages/ResultsPage';
 import Header from "./components/Header";
 import Footer from './components/Footer';
-import VotingPage from './pages/VotingPage';
-import Home from './pages/Home';
-import MyAccountPage from './pages/MyAccountPage';
-import VerifyVoterPage from './pages/VerifyVoterPage';
 import { useSelector } from "react-redux";
+
+const ResultsPage = lazy(() => import("./pages/ResultsPage"))
+const VotingPage = lazy(() => import("./pages/VotingPage"))
+const Home = lazy(() => import("./pages/Home"))
+const VerifyVoterPage = lazy(() => import("./pages/VerifyVoterPage"))
+const MyAccountPage = lazy(() => import("./pages/MyAccountPage"))
+
 
 const protectedRoutes = [
   { title: 'Verification', id: 1, component: <VerifyVoterPage />, path: '/verify' },
@@ -18,7 +19,6 @@ const protectedRoutes = [
 
 const LayoutRoutes = () => {
   const CURRENT_ACTIVE_PHASE = useSelector(state => state.auth.phase)
-  console.log(CURRENT_ACTIVE_PHASE)
 
   const allowedRouted = protectedRoutes.find(el => el.id === CURRENT_ACTIVE_PHASE)
 

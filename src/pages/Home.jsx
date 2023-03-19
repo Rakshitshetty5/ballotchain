@@ -3,7 +3,8 @@ import PageContainer from "../components/PageContainer";
 import { MENU } from "../data/menu";
 import { useNavigate } from "react-router-dom";
 import DigitalCard from "../components/DigitalCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import MainLoader from "../components/MainLoader";
 
 const PHASES = ['Registration', 'Verification', 'Voting', 'Results']
 
@@ -11,8 +12,8 @@ const Home = () => {
   const navigate = useNavigate();
   const isVerfied = useSelector((state) => state.auth?.isVerified);
   const userName = useSelector(state => state.auth?.voterDetails?.first_name)
+  const isFetching = useSelector(state => state.auth?.isFetching)
   const CURRENT_ACTIVE_PHASE = useSelector(state => state.auth.phase)
-
   const goToPage = (isAccessAllowed, path) => {
     if (!isAccessAllowed) {
       return;
@@ -22,6 +23,7 @@ const Home = () => {
 
   return (
     <PageContainer>
+      {isFetching ? <MainLoader /> : <>
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <h1 className="text-2xl font-light">Welcome {userName}!</h1>
         <h1 className="text-2xl font-light">
@@ -63,6 +65,7 @@ const Home = () => {
           );
         })}
       </div>
+      </>}
     </PageContainer>
   );
 };

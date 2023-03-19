@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import customAxios from "../utils/CustomAxios";
 import { useDispatch } from "react-redux";
 import { signIn } from "../redux/auth/reducer";
+import useIsLoading from '../hooks/useIsLoading'
+import { useSnackbar } from "notistack";
 
 const initalOtpState = {
   otp_1: "",
@@ -23,6 +25,8 @@ const AuthPage = () => {
   const [data, setData] = useState()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const {startLoading, endLoading, isLoading} = useIsLoading()
+  const { enqueueSnackbar } = useSnackbar();
 
   const otp = useMemo(() => {
     // e.preventDefault();
@@ -56,26 +60,44 @@ const AuthPage = () => {
   };
 
   const verifyOtp = async () => {
+    if(isLoading) return
     if (otp.length === 0) {
       setError('OTP cannot be empty')
     } else if (otp.length !== 6) {
       setError('Invalid OTP')
     } else {
-      const response = await customAxios.post('/voter/verifyOTP', { voter_id: voterId, otp, email: data?.email, voter_details_id: data?.voter_details_id})
-      console.log(response)
-      dispatch(signIn({ user: response.data.data, isVerified: response.data.data.user.isVerified }))
-      navigate('/')
+      startLoading()
+      try{
+        const response = await customAxios.post('/voter/verifyOTP', { voter_id: voterId, otp, email: data?.email, voter_details_id: data?.voter_details_id})
+        dispatch(signIn({ user: response.data.data, isVerified: response.data.data.user.isVerified }))
+        navigate('/')
+      }catch(err){
+        enqueueSnackbar(err.response?.data?.message ?? err.message, {
+          variant: "error",
+        });
+      }
+      endLoading()
     }
   }
 
 const submitVoterId = async () => {
-  const response = await customAxios.post('/voter/getOTP', { voter_id: voterId })
-  setData(response.data.data)
-  setStep(1)
+  if(isLoading) return
+  startLoading()
+  try{
+    const response = await customAxios.post('/voter/getOTP', { voter_id: voterId })
+    setData(response.data.data)
+    setStep(1)
+  }catch(err){
+    enqueueSnackbar(err.response?.data?.message ?? err.message, {
+      variant: "error",
+    });
+  }
+  endLoading()
 }
 
 const submitOtp = () => {
   verifyOtp()
+
 }
 
 return (
@@ -85,6 +107,7 @@ return (
       formSubTitle={
         "Please enter your 6 digit voter id in order to continue."
       }
+      isLoading={isLoading}
       rBtnText={"Next"}
       nextStep={submitVoterId}
     >
@@ -107,6 +130,7 @@ return (
       lBtnText={"Back"}
       prevStep={() => setStep(0)}
       nextStep={submitOtp}
+      isLoading={isLoading}
     >
       <div className="w-full">
         <label className="text-[1.1rem]">Enter OTP</label>

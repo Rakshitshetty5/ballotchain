@@ -3,44 +3,24 @@ import { useSelector } from 'react-redux'
 import {ethers} from 'ethers';
 import ElectionAbi from '../utils/SmartContract/ElectionContract.json'
 import { ElectionContractAddress } from '../utils/config'
-import { useEffect } from 'react';
+import useIsLoading from '../hooks/useIsLoading'
+import { useSnackbar } from "notistack";
 
 const VoteCandidateCard = ({ candidate_image, first_name, last_name, party, party_image, _id }) => {
     const currentUser = useSelector(state => state.auth?.currentUser?.user)
     const isVerfied = useSelector(state => state.auth?.isVerified)
+    const { enqueueSnackbar } = useSnackbar();
 
-    useEffect(() => {
-        (async() => {
-            try {
-                const {ethereum} = window
-            
-                if(ethereum) {
-                  const provider = new ethers.providers.Web3Provider(ethereum);
-                  const signer = provider.getSigner();
-                  const ElectionContract = new ethers.Contract(
-                    ElectionContractAddress,
-                    ElectionAbi.abi,
-                    signer
-                  )
-            
-                  let allVotes = await ElectionContract.getAllVotes();
-                  console.log(allVotes)
-                } else {
-                  console.log("Ethereum object doesn't exist");
-                }
-              } catch(error) {
-                console.log(error);
-              }
-        })()
-    }, [])
-
+    const {startLoading, endLoading, isLoading} = useIsLoading()
 
     async function castVote(){
+        if(isLoading) return
+        startLoading()
         const reqObj = {
             voter_id: currentUser.voter_id,
             isVerified: isVerfied,
             candidate: _id,
-            pvn: "nahi"
+            pvn: currentUser.pvn
         }
         try {
             const {ethereum} = window
@@ -57,15 +37,21 @@ const VoteCandidateCard = ({ candidate_image, first_name, last_name, party, part
               )
 
               ElectionContract.castVote(reqObj.pvn, reqObj.voter_id, reqObj.candidate, reqObj.isVerified).then(response => {
-                  console.log('Completed')
+                enqueueSnackbar("Vote casted successfully", {
+                    variant: "success",
+                });
               }).catch(err => {
-                  console.log('Error', err)
+                enqueueSnackbar(err.response?.data?.message ?? err.message, {
+                    variant: "error",
+                });
               })
             }
         }catch(err){
-            console.log(err)
+            enqueueSnackbar(err.response?.data?.message ?? err.message, {
+                variant: "error",
+            });
         }
-        
+        endLoading()
     }
 
     return (
@@ -81,7 +67,7 @@ const VoteCandidateCard = ({ candidate_image, first_name, last_name, party, part
                     {party}
                 </p>
                 <button onClick={castVote} type="button" className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                    Vote
+                    {isLoading ? 'Casting...' : 'Vote'}
                 </button>
             </div>
         </div>

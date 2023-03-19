@@ -1,25 +1,25 @@
 import React from 'react'
 
-const VotingResult = () => {
+const VotingResult = ({ party, voterId }) => {
   return (
-    <table class="table p-4 bg-white shadow rounded-lg">
+    <table className="table p-4 bg-white shadow rounded-lg">
         <thead>
             <tr>
-                <th class="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-                    PVN
+                <th className="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+                    Voter Id
                 </th>
-                <th class="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+                <th className="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
                     Voted For
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr class="text-gray-700">
-                <td class="p-4">
-                    1asdasds43214324234d
+            <tr className="text-gray-700">
+                <td className="p-4">
+                    {voterId}
                 </td>
-                <td class="p-4">
-                    BJP
+                <td className="p-4">
+                    {party}
                 </td>
             </tr>
         </tbody>

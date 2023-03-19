@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
+    isFetching: true,
     currentUser : null,
     isVerified: false,
     voterDetails: null,
@@ -10,6 +11,12 @@ export const authSlice = createSlice({
     phase: 0
   },
   reducers: {
+    startFetching: (state) => {
+      state.isFetching = true
+    },
+    fetchingSuccess: (state) => {
+      state.isFetching = false
+    },
     signIn: (state, action) => {
         state.currentUser = action.payload.user
     },
@@ -29,6 +36,6 @@ export const authSlice = createSlice({
   }
 });
 
-export const { signIn, signOut, setVoterDetails, setWalletAddress, setPhase } = authSlice.actions;
+export const { signIn, signOut, setVoterDetails, setWalletAddress, setPhase, startFetching, fetchingSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

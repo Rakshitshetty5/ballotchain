@@ -8,6 +8,7 @@ const FormContainer = ({
     lBtnText,
     nextStep,
     prevStep,
+    isLoading,
     children,
 }) => {
 
@@ -44,7 +45,7 @@ const FormContainer = ({
                             className="bg-[#c45252] w-full text-white font-bold rounded-full h-[3rem]"
                             onClick={handleFormSubmit}
                             >
-                                {rBtnText}
+                               {isLoading ? 'Loading...' : rBtnText}
                             </button>
                         </div>
                     </div>
